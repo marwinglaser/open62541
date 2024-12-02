@@ -100,6 +100,7 @@ function build_release_amalgamation {
           ..
 
     make open62541-amalgamation ${MAKEOPTS}
+    gcc -Wall -Werror -c open62541.c
 }
 
 ######################
