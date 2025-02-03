@@ -34,7 +34,10 @@ import sphinx_rtd_theme
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.graphviz']
+extensions = [
+    'sphinx.ext.graphviz',
+    'sphinx_rtd_theme',
+]
 
 numfig = True
 
