@@ -107,3 +107,11 @@ latex_elements = {
 # Latex figure (float) alignment
 #'figure_align': 'htbp',
 }
+
+# -- Options for manual page output ---------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-manual-page-output
+
+man_pages = [
+  # (source start file, name,        description,               authors,  manual section)
+    (master_doc,        'open62541', 'open62541 Documentation', [author], 1)
+]
