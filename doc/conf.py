@@ -115,3 +115,11 @@ man_pages = [
   # (source start file, name,        description,               authors,  manual section)
     (master_doc,        'open62541', 'open62541 Documentation', [author], 1)
 ]
+
+# -- Options for Texinfo output -------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-texinfo-output
+
+texinfo_documents = [
+# (source start file, target name, title,                     author, dir menu entry, description,                        category)
+  (master_doc,        'open62541', 'open62541 Documentation', author, 'open62541',    'One line description of project.', 'Miscellaneous'),
+]
