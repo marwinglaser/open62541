@@ -42,6 +42,8 @@ html_static_path = ['_static']
 
 html_logo = 'open62541_html.png'
 
+pygments_style = 'sphinx' # TODO makes code blocks ugly (overrides sphinx_rtd_theme)
+
 # -- Options for LaTeX output ---------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-latex-output
 
