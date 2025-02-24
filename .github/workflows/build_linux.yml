@@ -7,7 +7,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-20.04, ubuntu-22.04, ubuntu-24.04]
+        os: [ubuntu-16.04, ubuntu-20.04, ubuntu-22.04, ubuntu-24.04]
+        include:
+          - os: ubuntu-16.04
+            container: true
         build:
           - name: "Debug Build & Unit Tests (gcc)"
             cmd_deps: sudo apt-get install -y -qq mosquitto
@@ -210,7 +213,8 @@ jobs:
             cmd_action: build_all_companion_specs
 
     name: ${{ matrix.os }}-${{ matrix.build.name }}
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.container && 'ubuntu-latest' || matrix.os }}
+    container: ${{ matrix.container && matrix.os }}
     steps:
       - uses: actions/checkout@v4
         if: ${{ matrix.build.runs_on == '' || matrix.build.runs_on == matrix.os }}
