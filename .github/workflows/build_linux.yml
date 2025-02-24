@@ -211,7 +211,7 @@ jobs:
 
     name: ${{ matrix.os }}-${{ matrix.build.name }}
     runs-on: ${{ contains(matrix.os, ':') && 'ubuntu-latest' || matrix.os }}
-    container: ${{ contains(matrix.os, ':') && matrix.os }}
+    container: ${{ contains(matrix.os, ':') && matrix.os || null }}
     steps:
       - uses: actions/checkout@v4
         if: ${{ matrix.build.runs_on == '' || matrix.build.runs_on == matrix.os }}
