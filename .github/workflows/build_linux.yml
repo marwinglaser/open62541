@@ -7,7 +7,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-20.04, ubuntu-22.04, ubuntu-24.04]
+        os: [ubuntu-18.04, ubuntu-20.04, ubuntu-22.04, ubuntu-24.04]
         build:
           - name: "Debug Build & Unit Tests (gcc)"
             cmd_action: unit_tests
@@ -230,9 +230,24 @@ jobs:
           echo "New IPv6 status on eth0: $IPV6"
           [ "$IPV6" = "0" ] || { echo "Failed to enable IPv6 on eth0"; exit 1; }
       - uses: actions/checkout@v4
-        if: ${{ matrix.build.runs_on == '' || matrix.build.runs_on == matrix.os }}
+        if: ${{ (matrix.build.runs_on == '' || matrix.build.runs_on == matrix.os) && !contains(fromJSON('["ubuntu-18.04"]'), matrix.os) }}
         with:
           submodules: true
+      - name: Container Checkout
+        if: ${{ (matrix.build.runs_on == '' || matrix.build.runs_on == matrix.os) && contains(fromJSON('["ubuntu-18.04"]'), matrix.os) }}
+        run: |
+          set -eux
+          # git clone --depth 1 -b "$GITHUB_REF" "https://github.com/$GITHUB_REPOSITORY" .
+          # git submodule update --init --force --depth=1
+          git config --global --add safe.directory "$PWD"
+          git init
+          git remote add origin "https://github.com/$GITHUB_REPOSITORY"
+          git fetch --no-tags --prune --no-recurse-submodules --depth=1 origin "+$GITHUB_SHA:refs/remotes/origin/$GITHUB_REF"
+          git checkout "$GITHUB_REF"
+          git checkout --progress --force -B "$GITHUB_REF" "refs/remotes/origin/$GITHUB_REF"
+          git submodule sync
+          git submodule update --init --force --depth=1
+          git status
       - name: Install Dependencies
         if: ${{ matrix.build.runs_on == '' || matrix.build.runs_on == matrix.os }}
         run: |
