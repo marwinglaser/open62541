@@ -236,6 +236,7 @@ jobs:
       - name: Install Dependencies
         if: ${{ matrix.build.runs_on == '' || matrix.build.runs_on == matrix.os }}
         run: |
+          ${{ contains(matrix.os, ':') && 'apt-get install -y -qq sudo' }}
           sudo apt-get update
           sudo apt-get install -y -qq python3-sphinx graphviz check libpcap-dev
           ${{ matrix.build.cmd_deps }}
