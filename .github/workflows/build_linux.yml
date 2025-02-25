@@ -221,7 +221,7 @@ jobs:
         if: contains(matrix.os, ':')
         run: |
             set -eux
-            apt-get update && apt-get -y install git sudo
+            apt-get update && apt-get -y -qq install git sudo
             # git clone --depth 1 -b "$GITHUB_REF" "https://github.com/$GITHUB_REPOSITORY" .
             # git submodule update --init --force --depth=1
             git config --global --add safe.directory "$PWD"
