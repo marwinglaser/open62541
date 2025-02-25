@@ -221,7 +221,7 @@ jobs:
         if: contains(matrix.os, ':')
         run: |
             set -eux
-            apt-get update && apt-get -y install -y git
+            apt-get update && apt-get -y install git sudo
             # git clone --depth 1 -b "$GITHUB_REF" "https://github.com/$GITHUB_REPOSITORY" .
             # git submodule update --init --force --depth=1
             git config --global --add safe.directory "$PWD"
@@ -236,7 +236,6 @@ jobs:
       - name: Install Dependencies
         if: ${{ matrix.build.runs_on == '' || matrix.build.runs_on == matrix.os }}
         run: |
-          ${{ contains(matrix.os, ':') && 'apt-get install -y -qq sudo' }}
           sudo apt-get update
           sudo apt-get install -y -qq python3-sphinx graphviz check libpcap-dev
           ${{ matrix.build.cmd_deps }}
