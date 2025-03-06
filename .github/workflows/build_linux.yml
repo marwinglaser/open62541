@@ -100,6 +100,8 @@ jobs:
     name: ${{matrix.build_name}}
     runs-on: ubuntu-latest
     container: ubuntu:20.04
+    env:
+        DEBIAN_FRONTEND: noninteractive
     steps:
     - name: Prepare container
       run: |
