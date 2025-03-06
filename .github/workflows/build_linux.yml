@@ -114,6 +114,7 @@ jobs:
         apt-get install -y -qq python3-sphinx graphviz check
         ${{ matrix.cmd_deps }}
     - name: ${{matrix.build_name}}
+      shell: bash
       run: source tools/ci.sh && ${{matrix.cmd_action}}
       env:
         ETHERNET_INTERFACE: eth0
