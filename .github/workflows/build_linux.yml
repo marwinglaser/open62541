@@ -99,7 +99,9 @@ jobs:
           #   cmd_action: build_clang_analyzer
     name: ${{matrix.build_name}}
     runs-on: ubuntu-latest
-    container: ubuntu:20.04
+    container:
+        image: ubuntu:20.04
+        options: --privileged
     env:
         DEBIAN_FRONTEND: noninteractive
     steps:
