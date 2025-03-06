@@ -113,7 +113,7 @@ jobs:
     - name: Install Dependencies
       run: |
         apt-get update
-        apt-get install -y -qq cmake python3-sphinx graphviz check
+        apt-get install -y -qq cmake libcap2-bin python3-sphinx graphviz check
         ${{ matrix.cmd_deps }}
     - name: ${{matrix.build_name}}
       shell: bash
