@@ -101,6 +101,9 @@ jobs:
     runs-on: ubuntu-latest
     container: ubuntu:20.04
     steps:
+    - run: |
+        apt-get update
+        apt-get install -y git
     - uses: actions/checkout@v2
       with:
         submodules: true
