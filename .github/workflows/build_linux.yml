@@ -102,8 +102,6 @@ jobs:
     container:
         image: ghcr.io/marwinglaser/ci:ubuntu-20.04
         options: --privileged
-    env:
-        DEBIAN_FRONTEND: noninteractive
     steps:
     - uses: actions/checkout@v4
       with:
