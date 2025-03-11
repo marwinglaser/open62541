@@ -101,8 +101,12 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/marwinglaser/ci:ubuntu-20.04
-      options: --privileged --network host
+      options: --privileged
     steps:
+    - run: |
+        sudo apt-get update
+        sudo apt-get install -y iproute2
+        sudo ip a
     - uses: actions/checkout@v4
       with:
         submodules: true
