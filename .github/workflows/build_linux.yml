@@ -101,7 +101,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/marwinglaser/ci:ubuntu-20.04
-      options: --privileged
+      options: --privileged --network host
     steps:
     - uses: actions/checkout@v4
       with:
