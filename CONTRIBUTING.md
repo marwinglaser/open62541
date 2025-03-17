@@ -139,8 +139,6 @@ reverts commit <hash>.`, where the hash is the SHA of the commit being reverted.
 The commit **Type** Must be one of the following:
 
 - **build**: Changes that affect the build system or external dependencies
-- **ci**: Changes to our CI configuration files and scripts (example scopes:
-  travis, appveyor, fuzz)
 - **docs**: Documentation only changes
 - **feat**: A new feature
 - **fix**: A bug fix
@@ -167,6 +165,7 @@ supported scopes:
 - **pubsub**: Changes to the pubsub code
 - **sec**: Changes to security, encryption, etc.
 - **server**: Changes only affecting server code
+- **ci**: Changes to our CI configuration files and scripts
 
 The **Subject** contains a succinct description of the change:
 
