@@ -856,6 +856,7 @@ UA_ClientConnectionTCP_poll(UA_Connection *connection, UA_UInt32 timeout,
     OPTVAL_TYPE so_error = 0;
     socklen_t len = sizeof(so_error);
     ret = UA_getsockopt(connection->sockfd, SOL_SOCKET, SO_ERROR, &so_error, &len);
+    print_ip("getsockopt", tcpConnection->server);
     if(ret != 0 || so_error != 0) {
         // no UA_LOG_SOCKET_ERRNO_GAI_WRAP because of so_error
 #ifndef _WIN32
