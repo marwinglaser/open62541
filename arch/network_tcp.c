@@ -25,6 +25,12 @@
 #define MSG_NOSIGNAL 0
 #endif
 
+static void print_ip(const char* msg, struct addrinfo* info) {
+    char ipAddress[INET_ADDRSTRLEN];
+    inet_ntop(AF_INET, &(((struct sockaddr_in *)addr->ai_addr)->sin_addr), ipAddress, INET_ADDRSTRLEN);
+    printf("%s: %s\n", msg, ipAddress);
+}
+
 /****************************/
 /* Generic Socket Functions */
 /****************************/
@@ -294,6 +300,7 @@ ServerNetworkLayerTCP_add(UA_ServerNetworkLayer *nl, ServerNetworkLayerTCP *laye
 
 static UA_StatusCode
 addServerSocket(ServerNetworkLayerTCP *layer, struct addrinfo *ai) {
+    print_ip("Adding socket", ai);
     /* Create the server socket */
     UA_SOCKET newsock = UA_socket(ai->ai_family, ai->ai_socktype, ai->ai_protocol);
     if(newsock == UA_INVALID_SOCKET)
@@ -761,10 +768,7 @@ UA_ClientConnectionTCP_poll(UA_Connection *connection, UA_UInt32 timeout,
         int error = UA_connect(connection->sockfd, tcpConnection->server->ai_addr,
                                tcpConnection->server->ai_addrlen);
 
-        struct sockaddr_in *addr = (struct sockaddr_in *)tcpConnection->server->ai_addr;
-        char ipAddress[INET_ADDRSTRLEN];
-        inet_ntop(AF_INET, &(addr->sin_addr), ipAddress, INET_ADDRSTRLEN);
-        printf("Connecting to: %s\n", ipAddress);
+        print_ip("Connecting to", tcpConnection->server);
 
         /* Connection successful */
         if(error == 0) {
@@ -826,10 +830,7 @@ UA_ClientConnectionTCP_poll(UA_Connection *connection, UA_UInt32 timeout,
     int ret = UA_select((UA_Int32)(connection->sockfd + 1), NULL, &writing_fdset,
                         &error_fdset, &tmptv);
 
-    struct sockaddr_in *addr = (struct sockaddr_in *)tcpConnection->server->ai_addr;
-    char ipAddress[INET_ADDRSTRLEN];
-    inet_ntop(AF_INET, &(addr->sin_addr), ipAddress, INET_ADDRSTRLEN);
-    printf("Selected from: %s\n", ipAddress);
+    print_ip("Selected from", tcpConnection->server);
 
     // When select fails abort connection
     if(ret == -1) {
