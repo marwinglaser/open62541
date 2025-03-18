@@ -761,6 +761,11 @@ UA_ClientConnectionTCP_poll(UA_Connection *connection, UA_UInt32 timeout,
         int error = UA_connect(connection->sockfd, tcpConnection->server->ai_addr,
                                tcpConnection->server->ai_addrlen);
 
+        struct sockaddr_in *addr = (struct sockaddr_in *)tcpConnection->server->ai_addr;
+        char ipAddress[INET_ADDRSTRLEN];
+        inet_ntop(AF_INET, &(addr->sin_addr), ipAddress, INET_ADDRSTRLEN);
+        printf("Connecting to: %s\n", ipAddress);
+
         /* Connection successful */
         if(error == 0) {
             connection->state = UA_CONNECTIONSTATE_ESTABLISHED;
@@ -820,6 +825,11 @@ UA_ClientConnectionTCP_poll(UA_Connection *connection, UA_UInt32 timeout,
 
     int ret = UA_select((UA_Int32)(connection->sockfd + 1), NULL, &writing_fdset,
                         &error_fdset, &tmptv);
+
+    struct sockaddr_in *addr = (struct sockaddr_in *)tcpConnection->server->ai_addr;
+    char ipAddress[INET_ADDRSTRLEN];
+    inet_ntop(AF_INET, &(addr->sin_addr), ipAddress, INET_ADDRSTRLEN);
+    printf("Selected from: %s\n", ipAddress);
 
     // When select fails abort connection
     if(ret == -1) {
