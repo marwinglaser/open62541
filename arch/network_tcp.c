@@ -778,6 +778,7 @@ UA_ClientConnectionTCP_poll(UA_Connection *connection, UA_UInt32 timeout,
 
         /* The connection failed */
         if((UA_ERRNO != UA_ERR_CONNECTION_PROGRESS)) {
+            printf("connect");
             UA_LOG_WARNING(logger, UA_LOGCATEGORY_NETWORK,
                            "Connection to %.*s failed with error: %s",
                            (int)tcpConnection->endpointUrl.length,
@@ -834,6 +835,7 @@ UA_ClientConnectionTCP_poll(UA_Connection *connection, UA_UInt32 timeout,
 
     // When select fails abort connection
     if(ret == -1) {
+        printf("select");
         UA_LOG_WARNING(logger, UA_LOGCATEGORY_NETWORK,
                        "Connection to %.*s failed with error: %s",
                        (int)tcpConnection->endpointUrl.length,
@@ -876,6 +878,7 @@ UA_ClientConnectionTCP_poll(UA_Connection *connection, UA_UInt32 timeout,
                        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPSTR)&errno_str, 0,
                        NULL);
 #endif
+        printf("getsockopt");
         UA_LOG_WARNING(logger, UA_LOGCATEGORY_NETWORK,
                        "Connection to %.*s failed with error: %s",
                        (int)tcpConnection->endpointUrl.length,
