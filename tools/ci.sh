@@ -146,9 +146,9 @@ function unit_tests {
           -DUA_ENABLE_PUBSUB_MONITORING=ON \
           -DUA_ENABLE_PUBSUB_MQTT=ON \
           ..
-    make ${MAKEOPTS}
+    make ${MAKEOPTS} check_accesscontrol
     set_capabilities
-    make test ARGS="-V"
+    make test ARGS="-V -R accesscontrol"
 }
 
 function unit_tests_nosub {
