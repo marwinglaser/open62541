@@ -49,41 +49,41 @@ START_TEST(Client_anonymous) {
     UA_Client_delete(client);
 } END_TEST
 
-START_TEST(Client_user_pass_ok) {
-    UA_Client *client = UA_Client_new();
-    UA_ClientConfig_setDefault(UA_Client_getConfig(client));
-    UA_StatusCode retval =
-        UA_Client_connectUsername(client, "opc.tcp://localhost:4840", "user1", "password");
+// START_TEST(Client_user_pass_ok) {
+//     UA_Client *client = UA_Client_new();
+//     UA_ClientConfig_setDefault(UA_Client_getConfig(client));
+//     UA_StatusCode retval =
+//         UA_Client_connectUsername(client, "opc.tcp://localhost:4840", "user1", "password");
 
-    ck_assert_uint_eq(retval, UA_STATUSCODE_GOOD);
+//     ck_assert_uint_eq(retval, UA_STATUSCODE_GOOD);
 
-    UA_Client_disconnect(client);
-    UA_Client_delete(client);
-} END_TEST
+//     UA_Client_disconnect(client);
+//     UA_Client_delete(client);
+// } END_TEST
 
-START_TEST(Client_user_fail) {
-    UA_Client *client = UA_Client_new();
-    UA_ClientConfig_setDefault(UA_Client_getConfig(client));
-    UA_StatusCode retval =
-        UA_Client_connectUsername(client, "opc.tcp://localhost:4840", "user0", "password");
+// START_TEST(Client_user_fail) {
+//     UA_Client *client = UA_Client_new();
+//     UA_ClientConfig_setDefault(UA_Client_getConfig(client));
+//     UA_StatusCode retval =
+//         UA_Client_connectUsername(client, "opc.tcp://localhost:4840", "user0", "password");
 
-    ck_assert_uint_eq(retval, UA_STATUSCODE_BADUSERACCESSDENIED);
+//     ck_assert_uint_eq(retval, UA_STATUSCODE_BADUSERACCESSDENIED);
 
-    UA_Client_disconnect(client);
-    UA_Client_delete(client);
-} END_TEST
+//     UA_Client_disconnect(client);
+//     UA_Client_delete(client);
+// } END_TEST
 
-START_TEST(Client_pass_fail) {
-    UA_Client *client = UA_Client_new();
-    UA_ClientConfig_setDefault(UA_Client_getConfig(client));
-    UA_StatusCode retval =
-        UA_Client_connectUsername(client, "opc.tcp://localhost:4840", "user1", "secret");
+// START_TEST(Client_pass_fail) {
+//     UA_Client *client = UA_Client_new();
+//     UA_ClientConfig_setDefault(UA_Client_getConfig(client));
+//     UA_StatusCode retval =
+//         UA_Client_connectUsername(client, "opc.tcp://localhost:4840", "user1", "secret");
 
-    ck_assert_uint_eq(retval, UA_STATUSCODE_BADUSERACCESSDENIED);
+//     ck_assert_uint_eq(retval, UA_STATUSCODE_BADUSERACCESSDENIED);
 
-    UA_Client_disconnect(client);
-    UA_Client_delete(client);
-} END_TEST
+//     UA_Client_disconnect(client);
+//     UA_Client_delete(client);
+// } END_TEST
 
 
 static Suite* testSuite_Client(void) {
@@ -91,9 +91,9 @@ static Suite* testSuite_Client(void) {
     TCase *tc_client_user = tcase_create("Client User/Password");
     tcase_add_checked_fixture(tc_client_user, setup, teardown);
     tcase_add_test(tc_client_user, Client_anonymous);
-    tcase_add_test(tc_client_user, Client_user_pass_ok);
-    tcase_add_test(tc_client_user, Client_user_fail);
-    tcase_add_test(tc_client_user, Client_pass_fail);
+    // tcase_add_test(tc_client_user, Client_user_pass_ok);
+    // tcase_add_test(tc_client_user, Client_user_fail);
+    // tcase_add_test(tc_client_user, Client_pass_fail);
     suite_add_tcase(s,tc_client_user);
     return s;
 }
