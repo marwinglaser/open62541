@@ -26,8 +26,8 @@
 #endif
 
 static void print_ip(const char* msg, struct addrinfo* info) {
-    char ipAddress[INET_ADDRSTRLEN];
-    inet_ntop(info->ai_family, &(((struct sockaddr_in *)info->ai_addr)->sin_addr), ipAddress, INET_ADDRSTRLEN);
+    char ipAddress[INET6_ADDRSTRLEN];
+    inet_ntop(info->ai_family, &(((struct sockaddr_in *)info->ai_addr)->sin_addr), ipAddress, INET6_ADDRSTRLEN);
     printf("%s: %s\n", msg, ipAddress);
 }
 
