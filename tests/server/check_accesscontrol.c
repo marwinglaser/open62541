@@ -41,7 +41,7 @@ static void teardown(void) {
 START_TEST(Client_anonymous) {
     UA_Client *client = UA_Client_new();
     UA_ClientConfig_setDefault(UA_Client_getConfig(client));
-    UA_StatusCode retval = UA_Client_connect(client, "opc.tcp://127.0.0.1:4840");
+    UA_StatusCode retval = UA_Client_connect(client, "opc.tcp://localhost:4840");
 
     ck_assert_uint_eq(retval, UA_STATUSCODE_GOOD);
 
