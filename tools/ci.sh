@@ -148,7 +148,8 @@ function unit_tests {
           ..
     make ${MAKEOPTS} check_accesscontrol
     set_capabilities
-    make test ARGS="-V -R accesscontrol"
+    # make test ARGS="-V -R accesscontrol"
+    strace -f bin/tests/check_accesscontrol
 }
 
 function unit_tests_nosub {
