@@ -113,7 +113,7 @@ jobs:
     - name: Install Dependencies
       run: |
         sudo apt-get update
-        sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq cmake libcap2-bin pkg-config libssl-dev libcrypt-dev python3-sphinx graphviz check
+        sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq cmake libcap2-bin pkg-config libssl-dev libcrypt-dev python3-sphinx graphviz check strace
         ${{ matrix.cmd_deps }}
     - name: ${{matrix.build_name}}
       shell: bash
