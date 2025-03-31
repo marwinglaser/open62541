@@ -138,7 +138,7 @@ getUserExecutableOnObject_sks(UA_Server *server, UA_AccessControl *ac,
 }
 
 static void
-skssetup(void) {
+setup_sks(void) {
     running = true;
 
     UA_ByteString certificate;
@@ -199,7 +199,7 @@ skssetup(void) {
 }
 
 static void
-publishersetup(void) {
+setup_publisher(void) {
     running = true;
     publisherApp = UA_Server_new();
     UA_StatusCode retVal = UA_STATUSCODE_GOOD;
@@ -229,7 +229,7 @@ publishersetup(void) {
 }
 
 static void
-subscribersetup(void) {
+setup_subscriber(void) {
     running = true;
     subscriberApp = UA_Server_new();
     UA_StatusCode retVal = UA_STATUSCODE_GOOD;
@@ -258,7 +258,7 @@ subscribersetup(void) {
 }
 
 static void
-sksteardown(void) {
+teardown_sks(void) {
     running = false;
     THREAD_JOIN(server_thread);
     UA_Server_run_shutdown(sksServer);
@@ -266,14 +266,14 @@ sksteardown(void) {
 }
 
 static void
-publisherteardown(void) {
+teardown_publisher(void) {
     running = false;
     UA_Server_run_shutdown(publisherApp);
     UA_Server_delete(publisherApp);
 }
 
 static void
-subscriberteardown(void) {
+teardown_subscriber(void) {
     running = false;
     UA_Server_run_shutdown(subscriberApp);
     UA_Server_delete(subscriberApp);
@@ -914,9 +914,9 @@ int
 main(void) {
     int number_failed = 0;
     TCase *tc_pubsub_sks_client = tcase_create("PubSub SKS Client");
-    tcase_add_checked_fixture(tc_pubsub_sks_client, skssetup, sksteardown);
-    tcase_add_checked_fixture(tc_pubsub_sks_client, publishersetup, publisherteardown);
-    tcase_add_checked_fixture(tc_pubsub_sks_client, subscribersetup, subscriberteardown);
+    tcase_add_checked_fixture(tc_pubsub_sks_client, setup_sks, teardown_sks);
+    tcase_add_checked_fixture(tc_pubsub_sks_client, setup_publisher, teardown_publisher);
+    tcase_add_checked_fixture(tc_pubsub_sks_client, setup_subscriber, teardown_subscriber);
     tcase_add_test(tc_pubsub_sks_client, AddValidSksClientwithWriterGroup);
     tcase_add_test(tc_pubsub_sks_client, AddValidSksClientwithReaderGroup);
     tcase_add_test(tc_pubsub_sks_client, SetInvalidSKSClient);
