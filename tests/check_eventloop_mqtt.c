@@ -10,11 +10,42 @@
 /* The test suite requires an MQTT server listening at localhost:1883 */
 
 #include "testing_clock.h"
+#include <errno.h>
+#include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
 #include <check.h>
 
 unsigned int messageCount = 0;
+
+struct broker_endpoint {
+    UA_String hostname;
+    UA_UInt16 port;
+};
+
+static struct broker_endpoint get_mqtt_broker_endpoint(void) {
+    char* broker = getenv("OPEN62541_TEST_MQTT_BROKER");
+    if (!broker) {
+        return (struct broker_endpoint){UA_STRING_STATIC("localhost"), 1883};
+    }
+
+    char port_buf[6];
+    char hostname_buf[255];
+
+    if (sscanf(broker, "opc.mqtt://%254[^:]:%5[0-9]", hostname_buf, port_buf) < 2) goto failed;
+
+    unsigned short port = strtol(port_buf, NULL, 10);
+    if (errno == ERANGE) goto failed;
+
+    UA_String hostname = UA_STRING_ALLOC(hostname_buf);
+    if (!hostname.data) goto failed;
+
+    return (struct broker_endpoint){hostname, port};
+
+    failed:
+        printf("Failed to parse OPEN62541_TEST_MQTT_BROKER with value \"%s\"", broker);
+        exit(1);
+}
 
 static void
 connectionCallback(UA_ConnectionManager *cm, uintptr_t connectionId,
@@ -45,8 +76,9 @@ START_TEST(connectSubscribePublish) {
     el->registerEventSource(el, &mcm->eventSource);
     el->start(el);
 
-    UA_UInt16 port = 1883;
-    UA_String hostname = UA_STRING("localhost");
+    struct broker_endpoint broker = get_mqtt_broker_endpoint();
+    UA_UInt16 port = broker.port;
+    UA_String hostname = broker.hostname;
     UA_String topic = UA_STRING("mytopic");
     UA_Boolean subscribe = true;
 
