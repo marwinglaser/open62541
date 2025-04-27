@@ -17,27 +17,14 @@ if(NOT CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 endif()
 
 # generate namespace from XML file
-if(NOT CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-    ua_generate_nodeset_and_datatypes(
-        NAME "example"
-        FILE_NS "${FILE_NS_DIRPREFIX}/server_nodeset.xml"
-        DEPENDS "${CMAKE_CURRENT_LIST_DIR}/../../tools/schema/Opc.Ua.NodeSet2.Reduced.xml"
-    )
-else()
-    # standalone examples build expects already installed Opc.Ua.NodeSet2.Reduced.xml
-    ua_generate_nodeset_and_datatypes(
-        NAME "example"
-        FILE_NS "${FILE_NS_DIRPREFIX}/server_nodeset.xml"
-    )
-endif()
+ua_generate_nodeset_and_datatypes(NAME "example"
+                                  FILE_NS "${FILE_NS_DIRPREFIX}/server_nodeset.xml")
 
 # The .csv file can be created from within UaModeler or manually
-ua_generate_nodeid_header(
-    NAME "example_nodeids"
-    ID_PREFIX "EXAMPLE_NS"
-    TARGET_SUFFIX "ids_example"
-    FILE_CSV "${FILE_CSV_DIRPREFIX}/server_nodeset.csv"
-)
+ua_generate_nodeid_header(NAME "example_nodeids"
+                          ID_PREFIX "EXAMPLE_NS"
+                          TARGET_SUFFIX "ids_example"
+                          FILE_CSV "${FILE_CSV_DIRPREFIX}/server_nodeset.csv")
 
 add_example(server_nodeset server_nodeset.c
             ${UA_NODESET_EXAMPLE_SOURCES}
