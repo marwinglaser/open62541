@@ -91,9 +91,12 @@ function(ua_generate_nodeid_header)
     endif()
 
     # Add to the injector list
-    if(UA_GEN_ID_AUTOLOAD AND UA_ENABLE_NODESET_INJECTOR)
-        list(APPEND UA_NODESETINJECTOR_GENERATORS ${TARGET_NAME})
-        set_parent(UA_NODESETINJECTOR_GENERATORS)
+    if(UA_GEN_ID_AUTOLOAD)
+        if(NOT UA_ENABLE_NODESET_INJECTOR)
+            message(FATAL_ERROR "The AUTOLOAD flag requires the Nodesetinjector feature to be enabled")
+        endif()
+        list(APPEND UA_NODESETINJECTOR_SOURCE_FILES ${UA_GEN_ID_OUTPUT_DIR}/${UA_GEN_ID_NAME}.h)
+        set_parent(UA_NODESETINJECTOR_SOURCE_FILES)
     endif()
 endfunction()
 
@@ -458,29 +461,8 @@ function(ua_generate_nodeset)
         if(NOT UA_ENABLE_NODESET_INJECTOR)
             message(FATAL_ERROR "The AUTOLOAD flag requires the Nodesetinjector feature to be enabled")
         endif()
-        if(NOT TARGET ${TARGET_NAME}-autoinjection)
-            add_custom_target(${TARGET_NAME}-autoinjection
-                              COMMAND ${Python3_EXECUTABLE}
-                                      ${open62541_TOOLS_DIR}/nodeset_injector/generate_nodesetinjector_content.py
-                                      ${PROJECT_BINARY_DIR}/src_generated/open62541/nodesetinjector
-                                      "namespace${FILE_SUFFIX}"
-                              DEPENDS ${UA_GEN_NS_OUTPUT_DIR}/namespace${FILE_SUFFIX}.c
-                                      ${UA_GEN_NS_OUTPUT_DIR}/namespace${FILE_SUFFIX}.h)
-            add_dependencies(${TARGET_NAME} open62541-generator-nodesetinjector)
-            add_dependencies(${TARGET_NAME} ${TARGET_NAME}-autoinjection)
-
-            # The dependency ensures that the generated code is in the correct
-            # order in the nodeset injector and that the required namespaces are
-            # loaded first. Otherwise it can happen that e.g. machinery is
-            # loaded before di, which does not work because machinery is based
-            # on di.
-            foreach(DEPEND ${UA_GEN_NS_DEPENDS_TARGET})
-                string(FIND ${DEPEND} "open62541-generator-ns" POS)
-                if(POS GREATER_EQUAL 0)
-                    add_dependencies(${TARGET_NAME}-autoinjection ${DEPEND}-autoinjection)
-                endif()
-            endforeach()
-        endif()
+        list(APPEND UA_NODESETINJECTOR_SOURCE_FILES ${TARGET_SOURCES})
+        set_parent(UA_NODESETINJECTOR_SOURCE_FILES)
     endif()
 endfunction()
 

@@ -269,5 +269,6 @@ foreach(MODEL ${UA_INFORMATION_MODEL_AUTOLOAD})
     else()
         MESSAGE(WARNING "The specified nodeset '${MODEL}' is not supported or is misspelled.")
     endif()
-
 endforeach()
+
+set(UA_NODESETINJECTOR_SOURCE_FILES ${UA_NODESETINJECTOR_SOURCE_FILES} PARENT_SCOPE)

@@ -1273,22 +1273,16 @@ add_custom_target(open62541-code-generation DEPENDS open62541-generator-types
                                                     open62541-generator-namespace)
 
 # Generate Nodeset injector source files
+# TODO: Forward UA_INFORMATION_MODEL_AUTOLOAD to generate_nodesetinjector.py, so
+#       it knows which nodesets to load
 if(UA_ENABLE_NODESET_INJECTOR)
     message(STATUS "Nodesetinjector feature enabled")
-    add_custom_command(OUTPUT ${PROJECT_BINARY_DIR}/src_generated/open62541/nodesetinjector.h
-                       ${PROJECT_BINARY_DIR}/src_generated/open62541/nodesetinjector.c
-                       COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/nodeset_injector/generate_nodesetinjector.py
-                       ${PROJECT_BINARY_DIR}/src_generated/open62541/nodesetinjector)
-    add_custom_target(open62541-generator-nodesetinjector DEPENDS
-                      ${PROJECT_BINARY_DIR}/src_generated/open62541/nodesetinjector.c
-                      ${PROJECT_BINARY_DIR}/src_generated/open62541/nodesetinjector.h)
-    add_dependencies(open62541-code-generation open62541-generator-nodesetinjector)
-    set(UA_NODESETINJECTOR_GENERATORS "")
-    set(UA_NODESETINJECTOR_SOURCE_FILES "")
-    set(UA_NODESETINJECTOR_HEADER_FILES "")
-    set(UA_NODESETINJECTOR_EXAMPLE_NAMES "")
-    set(UA_NODESETINJECTOR_TEST_NAMES "")
+    set(UA_NODESETINJECTOR_SOURCE_FILES "") # List is appended from within ua_generate_nodeset
     add_subdirectory(tools/nodeset_injector)
+    add_custom_command(OUTPUT ${PROJECT_BINARY_DIR}/src_generated/open62541/nodesetinjector.h
+                              ${PROJECT_BINARY_DIR}/src_generated/open62541/nodesetinjector.c
+                       COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/nodeset_injector/generate_nodesetinjector.py
+                                                     ${PROJECT_BINARY_DIR}/src_generated/open62541/nodesetinjector)
     list(APPEND lib_headers ${PROJECT_BINARY_DIR}/src_generated/open62541/nodesetinjector.h)
     list(APPEND lib_sources ${PROJECT_BINARY_DIR}/src_generated/open62541/nodesetinjector.c
                             ${UA_NODESETINJECTOR_SOURCE_FILES})
